@@ -1,23 +1,22 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 
 // --- CONFIGURATION ---
-const TEXT_LIST = ["Steve Yang", "UC Irvine"];
+const TEXT_LIST = ["Steve Yang", "UC Irvine", "CS Major", "Developer"];
 const WORD_DISPLAY_DURATION = 6500; 
 const DEFAULT_FONT_FAMILY = "'Roboto Mono', monospace";
 
 // --- Physics Parameters ---
 const initialPhysicsParams = {
     PARTICLE_COUNT_TARGET: 4000,
-    PARTICLE_BASE_SIZE: 1.3,
+    PARTICLE_BASE_SIZE: 1.3, // Gets overridden dynamically for mobile
     ATTRACTION_FORCE_BASE: 0.10,
     NOISE_STRENGTH_BASE: 0.4,
     FRICTION: 0.95,
-    MOUSE_INTERACTION_RADIUS: 90,
+    MOUSE_INTERACTION_RADIUS: 90, // Gets overridden dynamically for mobile
     MOUSE_DISPERSE_STRENGTH: 1.2,
     TRAIL_ALPHA: 0.22
 };
 
-const POINT_SAMPLING_DENSITY = 4;
 const MIN_FONT_SIZE = 10;
 const SETTLE_DISTANCE_THRESHOLD = 4;
 const SETTLE_ATTRACTION_MULTIPLIER = 0.15;
@@ -124,7 +123,11 @@ const ParticleTypography = () => {
             return [{ sourceCanvasWidth: mainCanvasWidth, sourceCanvasHeight: mainCanvasHeight, isEmptyPlaceholder: true }];
         }
 
-        // 1. MASSIVE CANVAS FIX: Create a 3000x3000 invisible canvas to prevent the browser from clipping curves
+        // MOBILE RESPONSIVE LOGIC: Higher resolution sampling for tiny screens
+        const isMobile = mainCanvasWidth < 768;
+        const SAMPLING_DENSITY = isMobile ? 2 : 4; 
+        const WIDTH_CONSTRAINT = isMobile ? 0.95 : 0.85; // Let text stretch wider on phones
+
         const tempCanvas = document.createElement('canvas');
         tempCanvas.width = 3000;
         tempCanvas.height = 3000;
@@ -137,14 +140,12 @@ const ParticleTypography = () => {
             tempCtx.font = `bold ${fs}px ${DEFAULT_FONT_FAMILY}`;
             const textWidth = tempCtx.measureText(normalizedWord).width;
             
-            // Limit text to 85% width and 45% height of your REAL screen
-            if (textWidth < mainCanvasWidth * 0.85 && fs < mainCanvasHeight * 0.45) {
+            if (textWidth < mainCanvasWidth * WIDTH_CONSTRAINT && fs < mainCanvasHeight * 0.45) {
                 optimalFontSize = fs;
                 break;
             }
         }
 
-        // Draw in the dead center of the 3000x3000 void, drawing downward
         tempCtx.clearRect(0, 0, 3000, 3000);
         tempCtx.font = `bold ${optimalFontSize}px ${DEFAULT_FONT_FAMILY}`;
         tempCtx.fillStyle = 'white';
@@ -157,9 +158,9 @@ const ParticleTypography = () => {
         const rawPoints = [];
         let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
 
-        // Scan the massive canvas for pixels
-        for (let y = 800; y < 2000; y += POINT_SAMPLING_DENSITY) {
-            for (let x = 500; x < 2500; x += POINT_SAMPLING_DENSITY) {
+        // Scan the canvas using dynamic density
+        for (let y = 800; y < 2000; y += SAMPLING_DENSITY) {
+            for (let x = 500; x < 2500; x += SAMPLING_DENSITY) {
                 const alphaIndex = (y * 3000 + x) * 4 + 3;
                 if (data[alphaIndex] > 128) {
                     rawPoints.push({ x, y });
@@ -175,7 +176,6 @@ const ParticleTypography = () => {
              return [{ sourceCanvasWidth: mainCanvasWidth, sourceCanvasHeight: mainCanvasHeight, isEmptyPlaceholder: true }];
         }
 
-        // Shift the captured pixels from the massive canvas to the center of your real screen
         const actualWidth = maxX - minX;
         const actualHeight = maxY - minY;
         const offsetX = (mainCanvasWidth / 2) - (minX + actualWidth / 2);
@@ -194,6 +194,11 @@ const ParticleTypography = () => {
         const canvas = canvasRef.current;
         if (!canvas) return;
 
+        // MOBILE RESPONSIVE LOGIC: Adjust particle sizes and counts
+        const isMobile = canvas.width < 768;
+        physicsParamsRef.current.PARTICLE_BASE_SIZE = isMobile ? 0.8 : 1.3; // Smaller, crisper dots
+        physicsParamsRef.current.MOUSE_INTERACTION_RADIUS = isMobile ? 50 : 90; // Smaller touch radius
+
         const currentWord = TEXT_LIST[wordIndexRef.current % TEXT_LIST.length].toUpperCase();
 
         if (forceRecalculatePoints || wordTargetPointsRef.current.length === 0 ||
@@ -204,8 +209,8 @@ const ParticleTypography = () => {
 
             if (!initialParticleCountCalculatedRef.current && wordTargetPointsRef.current.length > 0 && !wordTargetPointsRef.current[0].isEmptyPlaceholder) {
                 const particleCountStep = 100;
-                const particleCountMin = 500;
-                const particleCountMax = 10000;
+                const particleCountMin = isMobile ? 300 : 500;
+                const particleCountMax = isMobile ? 2500 : 10000; // Limit max particles to prevent blobs
                 const INITIAL_PARTICLES_PER_TARGET_POINT_RATIO = 1.0;
 
                 let dynamicParticleCount = wordTargetPointsRef.current.length * INITIAL_PARTICLES_PER_TARGET_POINT_RATIO;
@@ -281,7 +286,6 @@ const ParticleTypography = () => {
     }, [initParticles]);
 
     useEffect(() => {
-        // --- GHOST TIMER FIX: Ensure React 18 doesn't run two loops at once ---
         let isMounted = true; 
         const canvasElement = canvasRef.current;
         if (!canvasElement) return;
@@ -298,7 +302,7 @@ const ParticleTypography = () => {
         let intervalId;
 
         const startApp = () => {
-            if (!isMounted) return; // Kills any ghost processes instantly!
+            if (!isMounted) return; 
 
             adjustLayout(); 
             initParticles(true, true); 
@@ -363,7 +367,6 @@ const ParticleTypography = () => {
         window.addEventListener('resize', handleResize);
 
         return () => { 
-            // --- Clean up everything securely ---
             isMounted = false; 
             clearInterval(intervalId);
             cancelAnimationFrame(animationFrameIdRef.current);
