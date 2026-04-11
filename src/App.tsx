@@ -124,7 +124,7 @@ function App() {
     <main className="w-full min-h-screen bg-black text-gray-100 font-sans selection:bg-gray-700 selection:text-white">
       
       {/* 1. HERO SECTION */}
-      <section className="relative w-full h-screen flex flex-col items-center justify-end pb-12 border-b border-white/5 overflow-hidden">
+      <section className="relative w-full h-[100dvh] flex flex-col items-center justify-end pb-12 border-b border-white/5 overflow-hidden">
         
         <div className="absolute inset-0 z-0">
           <ParticleTypography />
