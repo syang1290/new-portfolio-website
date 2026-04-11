@@ -1,7 +1,7 @@
 import React, { useEffect, useRef, useCallback } from 'react';
 
 // --- CONFIGURATION ---
-const TEXT_LIST = ["Steve Yang", "UC Irvine", "CS Major", "Developer"];
+const TEXT_LIST = ["Steve Yang", "UC Irvine"];
 const WORD_DISPLAY_DURATION = 6500; 
 const DEFAULT_FONT_FAMILY = "'Roboto Mono', monospace";
 
