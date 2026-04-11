@@ -13,10 +13,8 @@ const ScrollReveal = ({ children, delay = 0 }: { children: ReactNode, delay?: nu
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          // When the element is 10% visible, trigger the animation
           if (entry.isIntersecting) {
             setIsVisible(true);
-            // Stop observing once it has revealed (prevents re-animating on scroll up)
             if (currentRef) observer.unobserve(currentRef); 
           }
         });
@@ -50,7 +48,7 @@ export interface ProjectCardProps extends React.HTMLAttributes<HTMLDivElement> {
   description: string;
   link: string;
   linkText?: string;
-  tag?: string; // Added to support your existing tags
+  tag?: string; 
 }
 
 const ProjectCard = React.forwardRef<HTMLDivElement, ProjectCardProps>(
@@ -117,7 +115,6 @@ function App() {
   }, []);
 
   // --- ADVANCED TECHNIQUE: Smooth Scrolling ---
-  // Apply smooth scrolling to the entire HTML document on mount
   useEffect(() => {
     document.documentElement.style.scrollBehavior = 'smooth';
     return () => { document.documentElement.style.scrollBehavior = 'auto'; };
@@ -161,7 +158,7 @@ function App() {
         <div className="max-w-6xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-16">
           
           <ScrollReveal>
-            <h3 className="text-[clamp(1.25rem,3vw,1.5rem)] font-semibold mb-6 tracking-wide uppercase text-500">About Me</h3>
+            <h3 className="text-[clamp(1.25rem,3vw,1.5rem)] font-semibold mb-6 tracking-wide uppercase text-gray-500">About Me</h3>
             <div className="space-y-4 text-gray-300 leading-relaxed text-lg">
               <p>
                 Beyond the classroom, I am deeply involved in building scalable tools and exploring the intersection of web infrastructure and artificial intelligence.
@@ -184,7 +181,7 @@ function App() {
           </ScrollReveal>
 
           <ScrollReveal delay={200}>
-            <h3 className="text-[clamp(1.25rem,3vw,1.5rem)] font-semibold mb-6 tracking-wide uppercase text-500">My Skills</h3>
+            <h3 className="text-[clamp(1.25rem,3vw,1.5rem)] font-semibold mb-6 tracking-wide uppercase text-gray-500">My Skills</h3>
             <div className="flex flex-wrap gap-3">
               {['Python', 'React & Vite', 'TypeScript', 'FastAPI', 'Tailwind CSS', 'TensorFlow', 'SQL & Redis', 'C++', 'Linux/Infra'].map((skill) => (
                 <span key={skill} className="px-5 py-3 bg-zinc-900/50 border border-white/10 rounded-xl text-md hover:bg-white text-gray-300 hover:text-black hover:scale-105 transition-all cursor-default shadow-sm duration-300">
@@ -201,25 +198,28 @@ function App() {
       <section className="relative z-10 w-full py-32 px-6 sm:px-12 bg-black border-t border-white/5">
         <ScrollReveal>
           <div className="max-w-6xl mx-auto">
-            <h3 className="text-[clamp(1.25rem,3vw,1.5rem)] font-semibold mb-12 tracking-wide uppercase text-500 text-center">Featured Projects</h3>
+            <h3 className="text-[clamp(1.25rem,3vw,1.5rem)] font-semibold mb-12 tracking-wide uppercase text-gray-500 text-center">Featured Projects</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {[
                 { 
                   title: 'Plotwise', 
                   desc: 'A spatial intelligence engine built with React, FastAPI, and TypeScript.', 
+                  tag: 'Full-Stack', 
                   imgSrc: '/plotwise.jpg', 
                   link: 'https://github.com/yourusername/plotwise' 
                 },
                 { 
                   title: 'ZotImage', 
                   desc: 'An asynchronous image service utilizing Python, FastAPI, Redis, and Celery for high-performance processing.', 
+                  tag: 'Architecture', 
                   imgSrc: '/zotimage.jpg', 
                   link: 'https://github.com/yourusername/zotimage' 
                 },
                 { 
                   title: 'Easy VM', 
                   desc: 'Automated virtual machine management system developed for Cyber @ UCI infrastructure.', 
+                  tag: 'Cyber/Infra', 
                   imgSrc: '/easyvm.jpg', 
                   link: 'https://github.com/yourusername/easyvm' 
                 }
@@ -228,6 +228,7 @@ function App() {
                   key={i}
                   title={project.title}
                   description={project.desc}
+                  tag={project.tag}
                   imgSrc={project.imgSrc}
                   link={project.link}
                 />
@@ -241,7 +242,7 @@ function App() {
       <section className="relative z-10 w-full py-32 px-6 sm:px-12 bg-black border-t border-white/5">
         <ScrollReveal>
           <div className="max-w-6xl mx-auto">
-            <h3 className="text-[clamp(1.25rem,3vw,1.5rem)] font-semibold mb-12 tracking-wide uppercase text-500 text-center">Certifications</h3>
+            <h3 className="text-[clamp(1.25rem,3vw,1.5rem)] font-semibold mb-12 tracking-wide uppercase text-gray-500 text-center">Certifications</h3>
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               
@@ -251,7 +252,7 @@ function App() {
                 <div className="relative h-full p-8 bg-zinc-900/80 border border-white/5 rounded-2xl flex flex-col justify-between">
                   <div>
                     <div className="flex justify-between items-start mb-4">
-                      <h4 className="text-xl font-medium text-white pr-4">Harvard CS50 Python </h4>
+                      <h4 className="text-xl font-medium text-white pr-4">AWS Certified Cloud Practitioner</h4>
                       <svg className="w-6 h-6 text-gray-600 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
                       </svg>

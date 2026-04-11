@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useCallback } from 'react';
 
 // --- CONFIGURATION ---
 const TEXT_LIST = ["Steve Yang", "UC Irvine"];
-const WORD_DISPLAY_DURATION = 7000; 
+const WORD_DISPLAY_DURATION = 6500; 
 const DEFAULT_FONT_FAMILY = "'Roboto Mono', monospace";
 
 // --- Physics Parameters ---
@@ -281,7 +281,7 @@ const ParticleTypography = () => {
     }, [initParticles]);
 
     useEffect(() => {
-        // --- 2. GHOST TIMER FIX: Ensure React 18 doesn't run two loops at once ---
+        // --- GHOST TIMER FIX: Ensure React 18 doesn't run two loops at once ---
         let isMounted = true; 
         const canvasElement = canvasRef.current;
         if (!canvasElement) return;
