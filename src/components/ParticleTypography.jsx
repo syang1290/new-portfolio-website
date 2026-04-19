@@ -99,12 +99,16 @@ class Particle {
     }
 
     draw(ctx) {
-        ctx.beginPath();
-        ctx.arc(this.x, this.y, Math.max(0.2, this.size), 0, Math.PI * 2);
+        // PERFORMANCE FIX 1: Removed shadowColor and shadowBlur. 
+        // (Calculating blur on 4000 objects at 60fps kills Windows/integrated GPUs).
+        
         ctx.fillStyle = this.color;
-        ctx.shadowColor = this.color;
-        ctx.shadowBlur = Math.min(5, this.size * 1.5);
-        ctx.fill();
+        
+        // PERFORMANCE FIX 2: Switched from ctx.arc (circles) to ctx.fillRect (squares).
+        // Drawing tiny rectangles is massively faster for the browser. 
+        // Since particles are 1-2px wide, they still look like perfectly smooth dots!
+        const renderSize = Math.max(0.5, this.size * 1.5);
+        ctx.fillRect(this.x, this.y, renderSize, renderSize);
     }
 }
 
