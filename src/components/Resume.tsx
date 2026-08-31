@@ -41,58 +41,31 @@ export function Resume() {
         </section>
 
         <section className="resume-section">
-          <h2 className="section-title">Projects</h2>
-          
-          <div className="resume-item">
-            <div className="item-header">
-              <strong>Plotwise</strong>
-              <span className="tech-stack">React, FastAPI, TypeScript, OpenAI, Mapbox</span>
-            </div>
-            <ul className="resume-bullets">
-              <li>Developed a spatial intelligence engine using React, FastAPI, and TypeScript to automate Accessory Dwelling Unit (ADU) feasibility analysis.</li>
-              <li>Engineered a zoning parser with GPT-5-mini to extract architectural data from municipal information.</li>
-              <li>Integrated Mapbox GL JS for interactive visualization and real time spatial data rendering.</li>
-              <li>Architected a secure cloud infrastructure on Vercel and Render with CI/CD and CORS configurations.</li>
-            </ul>
-          </div>
-
-          <div className="resume-item">
-            <div className="item-header">
-              <strong>Invasive Species Detection Project</strong>
-              <span className="tech-stack">TensorFlow, Flask, Python</span>
-            </div>
-            <ul className="resume-bullets">
-              <li>Designed and trained a Convolutional Neural Network (CNN) using TensorFlow to identify 15+ invasive species, processing a dataset of 5,000+ images for high-precision classification.</li>
-              <li>Developed a full-stack dashboard with Flask to visualize detection hotspots, aiding local ecologists in managing 2,000+ acres of natural habitat.</li>
-            </ul>
-          </div>
-
-          <div className="resume-item">
-            <div className="item-header">
-              <strong>American Sign Language Model</strong>
-              <span className="tech-stack">JavaScript, PyScript, Google's Teachable Machines</span>
-            </div>
-            <ul className="resume-bullets">
-              <li>Engineered a real-time computer vision application that translates ASL gestures into text with 90%+ accuracy, utilizing PyScript to run Python logic directly in the browser.</li>
-              <li>Presented the prototype at Tufts University’s Engineering with AI event, demonstrating the potential for accessible communication tools in healthcare.</li>
-            </ul>
-          </div>
-
-          <div className="resume-item">
-            <div className="item-header">
-              <strong>ZotBlog: Blogging Platform API</strong>
-              <span className="tech-stack">Python, Flask, SQLite</span>
-            </div>
-            <ul className="resume-bullets">
-              <li>Developed a RESTful API with Flask supporting standard CRUD operations and custom search logic, handling data persistence for hundreds of unique blog entries.</li>
-              <li>Designed a relational database schema in SQLite using indexing to optimize query performance for wildcard search terms across titles, categories, and tags.</li>
-              <li>Standardized error handling and API documentation, ensuring consistent 201, 400, and 404 response codes for seamless integration with frontend clients.</li>
-            </ul>
-          </div>
-        </section>
-
-        <section className="resume-section">
           <h2 className="section-title">Work Experience</h2>
+          <div className="resume-item">
+            <div className="item-header">
+              <strong>Tech Fellow @ CodePath</strong>
+              <span>May 2026 – Present</span>
+            </div>
+            <ul className="resume-bullets">
+              <li>Mentored 500+ students in Intermediate Cybersecurity (CYB102), providing comprehensive technical and facilitation assistance during active class sessions.</li>
+              <li>Taught and applied industry-standard cybersecurity and network monitoring tools, including Wireshark, Docker, NGINX, Auditd, Snort, Splunk, and Catalyst.</li>
+              <li>Structured peer breakout discussion questions and planned escalation workflows for 90+ breakout groups, reducing average technical blocker resolution time by 15%.</li>
+            </ul>
+          </div>
+
+          <div className="resume-item">
+            <div className="item-header">
+              <strong>AI/ML Fellow @ Break Through Tech</strong>
+              <span>June 2026 – Present</span>
+            </div>
+            <ul className="resume-bullets">
+              <li>Selected from 4000+ applicants for a highly competitive fellowship focused on applying machine learning to practical tech industry challenges.</li>
+              <li>Completed 100+ hours of rigorous coursework to earn a Machine Learning Foundations Certificate from Cornell University in preparation for an upcoming industry-partnered capstone project.</li>
+              <li>Developed and trained machine learning models utilizing Python, Pandas, and Scikit-learn.</li>
+           </ul>
+          </div>
+
           <div className="resume-item">
             <div className="item-header">
               <strong>Lead Swim Instructor</strong>
@@ -122,10 +95,6 @@ export function Resume() {
             </li>
             <li>
               <strong>USACO Silver | ACSL Finalist | Eagle Scout</strong>
-            </li>
-            <li>
-              <span><strong>Cornell University</strong> — Online Certificate in Machine Learning Foundations</span>
-              <span className="location">08/2026</span>
             </li>
           </ul>
         </section>
