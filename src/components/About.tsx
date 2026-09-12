@@ -1,6 +1,26 @@
 import { Link } from "react-router-dom";
+import { useState, useEffect } from "react"; 
 
 export function About() {
+  const [visitors, setVisitors] = useState<number | null>(null);
+
+  useEffect(() => {
+    // 1. Switched to a reliable community-hosted counter API
+    fetch("https://countapi.mileshilliard.com/api/v1/hit/syang1290_portfolio_visits")
+      .then((res) => {
+        // Catch any HTTP errors (like 404 or 410) before trying to parse the JSON
+        if (!res.ok) throw new Error("Counter API unavailable");
+        return res.json();
+      })
+      .then((data) => {
+        // 2. Added a safeguard to ensure the API actually returned a number
+        if (data && typeof data.value === 'number') {
+          setVisitors(data.value);
+        }
+      })
+      .catch((err) => console.error("Counter error:", err));
+  }, []);
+
   return (
     <div className="page-container">
       <header className="navbar">
@@ -47,6 +67,16 @@ export function About() {
             </svg>
           </a>
         </div>
+
+        {typeof visitors === 'number' && (
+          <div className="retro-tracker-container">
+            {String(visitors).padStart(6, '0').split('').map((digit, index) => (
+              <div key={index} className="retro-tracker-box">
+                <span className="retro-tracker-digit">{digit}</span>
+              </div>
+            ))}
+          </div>
+        )}
       </main>
     </div>
   );
